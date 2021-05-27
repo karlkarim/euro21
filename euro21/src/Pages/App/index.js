@@ -1,6 +1,8 @@
 const MainApp = () => {
   return ( 
-    <div>Sup</div>
+    <div>
+      Sisse logitud - loo uus ennustus mäng
+    </div>
    );
 }
  
