@@ -1,21 +1,24 @@
-import { useStoreActions } from 'easy-peasy'
+import { useStoreActions, useStoreState } from 'easy-peasy'
+import { useHistory } from 'react-router-dom';
 const Auth = () => {
-  const { setAuthFormOpen } = useStoreActions(action => action.ui)
-  /*
-  Kui juba sisse logitud siis kuvab ainult nuppu ava rakendus
-  Kui vajutab login siis avab login vormi 
-  Kui vajutab singup siis avab signup vormi
-  */
+  const { setAuthForm } = useStoreActions(action => action.ui)
+  const { isLoggedIn } = useStoreState(state => state.user)
+  const history = useHistory()
 
   const handleAuth = (authType) => {
-    setAuthFormOpen(authType)
+    setAuthForm([true, authType])
   }
   
   return (
     <div>
-      <button onClick={()=> handleAuth('login')}>Login</button>
-      <button onClick={()=> handleAuth('signup')}>Signup</button>
-      {/* <AuthForm /> */}
+      {isLoggedIn ? (
+        <button onClick={()=> history.push('/app')}>Enter App</button>
+      ): (
+        <div>
+          <button onClick={()=> handleAuth('login')}>Login</button>
+          <button onClick={()=> handleAuth('signup')}>Signup</button>
+        </div>
+      )}
     </div>
   );
 };

@@ -1,31 +1,65 @@
-import { Fragment } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { Fragment, useEffect, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { LockClosedIcon } from "@heroicons/react/solid";
 import { useStoreState, useStoreActions } from "easy-peasy";
+import { useHistory } from "react-router";
 const AuthForm = () => {
-  const { authFormOpen, authType } = useStoreState((state) => state.ui);
-  const { setAuthFormOpen } = useStoreActions((action) => action.ui);
+  const { authFormOpen, authType, authErrorMsg } = useStoreState((state) => state.ui);
+  const { setAuthForm, clearAuthMsg } = useStoreActions((action) => action.ui);
+  const { isLoggedIn } = useStoreState((state) => state.user);
+  const { userSignup, userLogin } = useStoreActions((action => action.user))
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isFormValid, setIsFormValid] = useState(false);
+  const history = useHistory()
+  const toggleForm = (authType) => {
+    setAuthForm([true, authType])
+    clearAuthMsg()
+  }
+  const formValid = () => {
+    if(authType === 'login') {
+      if(email === '' || password === '') return false
+    }
+    if(authType === 'signup') {
+      if(username === '' || email === '' || password === '') return false
+    }
+    return true
+  }
+  const closeAuthForm = () => () => {
+    setAuthForm([false, 'login'])
+    clearAuthMsg()
+    setUsername('')
+    setEmail('')
+    setPassword('')
+  }
+  const handleAuthFormSubmit = (e) => {
+    e.preventDefault()
+    if(!formValid()) return
+    if(authType === 'login') {
+      userLogin({email, password, username})
+    } else {
+      userSignup({email, password, username})
+    }
+  }
+  useEffect(() => {
+    setIsFormValid(!formValid())
+  },[username, email, password])
+
+  useEffect(() => {
+    if(isLoggedIn) return history.push('/app')
+  }, [isLoggedIn]);
   return (
     <>
       <Transition appear show={authFormOpen} as={Fragment}>
         <Dialog
           as="div"
           className="fixed inset-0 z-10 overflow-y-auto"
-          onClose={() => setAuthFormOpen('login')}
+          onClose={closeAuthForm()}
         >
           <div className="min-h-screen px-4 text-center">
-            <Transition.Child
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0"
-              enterTo="opacity-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100"
-              leaveTo="opacity-0"
-            >
               <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
-            </Transition.Child>
-
             {/* This element is to trick the browser into centering the modal contents. */}
             <span
               className="inline-block h-screen align-middle"
@@ -49,9 +83,9 @@ const AuthForm = () => {
                 >
                   {authType === "login" ? "Sign in" : "Sign up"}
                 </Dialog.Title>
-                <Dialog.Description>
-                  <form className="mt-8 space-y-6">
-                    <div className="rounded-md shadow-sm -space-y-px">
+                
+                  <form className="mt-8 space-y-6" onSubmit={(e) => handleAuthFormSubmit(e)}>
+                    <div className="-space-y-px rounded-md shadow-sm">
                       {authType === "signup" ? (
                         <div>
                           <label htmlFor="username" className="sr-only">
@@ -59,11 +93,11 @@ const AuthForm = () => {
                           </label>
                           <input
                             id="username"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
                             name="username"
-                            type="username"
-                            required
-                            className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                            placeholder="Email address"
+                            className="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                            placeholder="Username"
                           />
                         </div>
                       ) : (
@@ -76,10 +110,9 @@ const AuthForm = () => {
                         <input
                           id="email-address"
                           name="email"
-                          type="email"
-                          autoComplete="email"
-                          required
-                          className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          className="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                           placeholder="Email address"
                         />
                       </div>
@@ -90,36 +123,41 @@ const AuthForm = () => {
                         <input
                           id="password"
                           name="password"
-                          type="password"
-                          autoComplete="current-password"
-                          required
-                          className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          className="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                           placeholder="Password"
                         />
                       </div>
                     </div>
-
+                        {authErrorMsg ? (<div className='text-sm text-red-500'>{authErrorMsg}</div>) : ''}
                     <div>
                       <button
+                        disabled={isFormValid}
                         type="submit"
-                        className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        className="relative flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md group hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                       >
-                        <span className="absolute left-0 inset-y-0 flex items-center pl-3">
+                        <span className="absolute inset-y-0 left-0 flex items-center pl-3">
                           <LockClosedIcon
-                            className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
+                            className="w-5 h-5 text-indigo-500 group-hover:text-indigo-400"
                             aria-hidden="true"
                           />
                         </span>
                         Sign in
                       </button>
-                      <div className="my-4 text-sm">
-                        <div className="font-medium text-indigo-600 hover:text-indigo-500">
-                          Don't have an account ?
+                      <div className="flex justify-between my-4 text-sm">
+                        <div className="">
+                          {authType === 'login' ? 'Don\'t have an account?' : 'Already have an account?'}
+                        </div>
+                        <div
+                          onClick={() => toggleForm(authType === 'login' ? 'signup': 'login')}
+                          className='text-indigo-600 cursor-pointer hover:text-indigo-500'>
+                            {authType === 'login' ? 'Signup' : 'Login'}
                         </div>
                       </div>
                     </div>
                   </form>
-                </Dialog.Description>
+                
               </div>
             </Transition.Child>
           </div>
