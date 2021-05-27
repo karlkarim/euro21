@@ -1,4 +1,4 @@
-import { action, actionOn, thunk, thunkOn } from "easy-peasy";
+import { action, thunk } from "easy-peasy";
 import { auth, db } from "../firebase/config";
 
 export const user = {

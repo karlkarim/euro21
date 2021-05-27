@@ -1,9 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Suspense, useEffect } from 'react'
 import { Route, Switch } from "react-router-dom";
 import { routes } from "./Routes";
 import AuthForm from './Components/Auth/Form'
 
-import { useStoreActions, useStoreState } from 'easy-peasy';
+import { useStoreActions } from 'easy-peasy';
 
 function App() {
   const { resumeLogin } = useStoreActions(action => action.user)
