@@ -1,4 +1,5 @@
 import Flag from 'react-world-flags'
+import TurnaCard from "../../Components/Cards/turnaCard"
 const MainApp = () => {
   return ( 
     <div className='grid gap-4'>
@@ -21,7 +22,11 @@ const MainApp = () => {
           <div className='text-center'>North Macedonia</div>
         </div>
       </div>
+      <TurnaCard/>
     </div>
+    
+    
+
    );
 }
  
