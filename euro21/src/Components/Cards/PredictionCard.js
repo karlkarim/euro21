@@ -7,12 +7,15 @@ const PredictionCard = ({ homeTeam, awayTeam, homeScore, awayScore, homeFlag, aw
           <div className='text-center'>{homeTeam}</div>
         </div>
         <div>
-          <div className='flex flex-col items-center'>
+          <div className='relative flex flex-col items-center'>
             <div className='text-xs uppercase'>Starting date</div>
             <div className='text-xs'>{startingTime}</div>
             <div
               onClick={() => alert('Siia ennustus asi')}
-              className='mt-2 text-3xl'>{homeScore} : {awayScore}</div>
+              className='mt-2 text-3xl '>
+                {homeScore} : {awayScore}
+            </div>
+                <div className='absolute text-xs text-red-400 -bottom-3'>Pick needed</div>
           </div>
         </div>
         <div className='flex flex-col items-center'>

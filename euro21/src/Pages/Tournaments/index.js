@@ -1,16 +1,23 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import PredictionCard from "../../Components/Cards/PredictionCard";
+import { useHistory, useParams } from "react-router-dom";
+import TurnaCard from "../../Components/Cards/turnaCard";
 import { db } from "../../firebase/config";
 const Tournament = () => {
-  const [tournament, setTournament] = useState(null);
+  const [tournaments, setTournaments] = useState(null);
   const { id } = useParams();
+  const history = useHistory()
+  const handleClick = (id) => () => {
+    history.push(`/app/tournament/${id}`)
+  }
   const fetchTournaData = async () => {
     try {
-      const query = await db.collection("GroupStages").doc(id).get();
-      console.log(query.data());
-      if (query.exists) {
-        setTournament(query.data());
+      const query = await db.collection("tournaments").where("participants", "array-contains", "karl").get();
+      if (!query.empty) {
+        const turna = query.docs.map(turna => ({
+          id: turna.id,
+          ...turna.data()
+        }))
+        setTournaments(turna);
       }
     } catch (error) {
       console.log("error", error);
@@ -19,22 +26,11 @@ const Tournament = () => {
   useEffect(() => {
     fetchTournaData();
   }, []);
-  console.log(tournament)
   return (
-    <div>
-      {tournament ? (
-        <PredictionCard
-          homeTeam={tournament.homeTeam}
-          homeFlag={tournament.homeFlag}
-          homeScore={tournament.homeScore}
-          startingTime={tournament.startDate.seconds}
-          awayTeam={tournament.awayTeam}
-          awayFlag={tournament.awayFlag}
-          awayScore={tournament.awayScore}
-        />
-      ) : (
-        "Loading...."
-      )}
+    <div className='grid gap-3 md:grid-cols-3'>
+      {tournaments ? tournaments.map(({ id, name, ownerId, backImage }) => (
+        <TurnaCard onClick={handleClick(id)} name={name} owner={ownerId} bckImg={backImage}/>
+      )): 'Loading...'}
     </div>
   );
 };
