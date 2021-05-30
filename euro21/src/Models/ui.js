@@ -13,5 +13,8 @@ export const ui =  {
   }),
   onAuthFailed: actionOn((action, storeActions) => storeActions.user.setAuthError, (state, target) => {
     state.authErrorMsg = target.payload
+  }),
+  onAuthSuccess: actionOn((action, storeActions) => storeActions.user.setIsLoggedIn, (state, target) => {
+    state.authFormOpen = false
   })
 }

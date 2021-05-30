@@ -35,6 +35,7 @@ const Tournament = () => {
         awayScore,
         startingTime}) => (
         <PredictionCard
+        key={Math.random(100)}
         homeTeam={homeTeam}
         homeFlag={homeFlag}
         homeScore={homeScore}

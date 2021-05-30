@@ -39,17 +39,16 @@ const AuthForm = () => {
     if(!formValid()) return
     if(authType === 'login') {
       userLogin({email, password, username})
+      if(isLoggedIn) return history.push('/app')
     } else {
       userSignup({email, password, username})
+      if(isLoggedIn) return history.push('/app')
     }
   }
   useEffect(() => {
     setIsFormValid(!formValid())
   },[username, email, password])
 
-  useEffect(() => {
-    if(isLoggedIn) return history.push('/app')
-  }, [isLoggedIn]);
   return (
     <>
       <Transition appear show={authFormOpen} as={Fragment}>

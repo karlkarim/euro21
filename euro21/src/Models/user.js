@@ -1,5 +1,6 @@
 import { action, thunk } from "easy-peasy";
 import { auth, db } from "../firebase/config";
+import http from "../http";
 
 export const user = {
   userdata: null,
@@ -19,12 +20,8 @@ export const user = {
     try {
       const resp = await auth.signInWithEmailAndPassword(email, password)
       if(resp.user) {
-        const query = await db.collection('users').where('email', '==', email).get()
-        const user = query.docs.map(user => ({
-          username: user.id,
-          ...user.data()
-        }))
-        action.setUserData(user[0])
+        const query = await http.get('/users', { params: {jsonata: `[$[data.email="${email}"]]`}})
+        action.setUserData(query.data[0])
         action.setIsLoggedIn(true)
       }
     } catch (error) {
@@ -35,13 +32,14 @@ export const user = {
   userSignup: thunk(async (action, payload) => {
     const { email, password, username } = payload
     try {
-      const usernameExists = await db.collection('users').doc(`${username}`).get()
-      if(usernameExists.exists) {
+      const usernameExists = await http.get('/users', {params:{jsonata: `[$[data.username="${username}"]]`}})
+      
+      if(!usernameExists.length) {
         return action.setAuthError('Username already taken!')
       } else {
         const resp = await auth.createUserWithEmailAndPassword(email, password)
         if(resp.user) {
-          await db.collection('users').doc(username).set({
+          await http.post('/users', {
             username,
             email,
             avatar: null,
@@ -60,12 +58,9 @@ export const user = {
     try {
       auth.onAuthStateChanged(async (user) => {
         if(user) {
-          const query = await db.collection('users').where('email', '==', user.providerData[0].email).get()
-          const userdata = query.docs.map(user => ({
-            username: user.id,
-            ...user.data()
-          }))
-          action.setUserData(userdata[0])
+          const email = user.email
+          const query = await http.get('/users', {params: { jsonata: `[$[data.email="${email}"]]`} })
+          action.setUserData(query.data[0])
           action.setIsLoggedIn(true)
         }
       })

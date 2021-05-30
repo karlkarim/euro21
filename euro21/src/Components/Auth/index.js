@@ -15,8 +15,8 @@ const Auth = () => {
         <button onClick={()=> history.push('/app')}>Enter App</button>
       ): (
         <div>
-          <button onClick={()=> handleAuth('login')}>Login</button>
-          <button onClick={()=> handleAuth('signup')}>Signup</button>
+          <button key='ss' onClick={()=> handleAuth('login')}>Login</button>
+          <button key='aa' onClick={()=> handleAuth('signup')}>Signup</button>
         </div>
       )}
     </div>

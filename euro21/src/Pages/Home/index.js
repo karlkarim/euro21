@@ -1,7 +1,9 @@
 import Auth from '../../Components/Auth/index';
 const Home = () => {
   return ( 
-    <div><Auth /></div>
+    <div>
+      <Auth />
+    </div>
    );
 }
  

@@ -29,7 +29,7 @@ const Tournament = () => {
   return (
     <div className='grid gap-3 md:grid-cols-3'>
       {tournaments ? tournaments.map(({ id, name, ownerId, backImage }) => (
-        <TurnaCard onClick={handleClick(id)} name={name} owner={ownerId} bckImg={backImage}/>
+        <TurnaCard key={id} onClick={handleClick(id)} name={name} owner={ownerId} bckImg={backImage}/>
       )): 'Loading...'}
     </div>
   );

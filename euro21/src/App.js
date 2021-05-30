@@ -7,6 +7,8 @@ import AuthForm from './Components/Auth/Form'
 import { useStoreActions } from 'easy-peasy';
 import Wrapper from './Components/Wrapper';
 import { useStoreState } from 'easy-peasy';
+import { useHistory } from 'react-router-dom';
+
 
 function App() {
   const { resumeLogin } = useStoreActions(action => action.user)
@@ -14,20 +16,18 @@ function App() {
   useEffect(() => {
     resumeLogin()
   }, []);
+
+  
   return (
     <div>
       <AuthForm />
       <Suspense fallback='Loading'>
         <Switch>
-        {routes().map(({path, component}, i) => (
-          isLoggedIn ? (
           <Wrapper>
-            <Route key={i} exact path={path} component={component} />
+          {routes().map(({path, component}, i) => (
+              <Route key={i} exact path={path} component={component} />  
+            ))}
           </Wrapper>
-          ): (
-            <Route key={i} exact path={path} component={component} />
-          )
-        ))}
         </Switch>
       </Suspense>
     </div>
