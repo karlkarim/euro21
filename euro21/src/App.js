@@ -8,6 +8,7 @@ import { useStoreActions } from 'easy-peasy';
 import Wrapper from './Components/Wrapper';
 import { useStoreState } from 'easy-peasy';
 import { useHistory } from 'react-router-dom';
+import NewScore from './Components/Dialogs/AddScore/index';
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
   return (
     <div>
       <AuthForm />
+      <NewScore />
       <Suspense fallback='Loading'>
         <Switch>
           <Wrapper>

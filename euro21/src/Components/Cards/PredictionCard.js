@@ -1,9 +1,17 @@
 import Flag from 'react-world-flags'
+import { useStoreActions } from 'easy-peasy';
+
 const PredictionCard = ({ homeTeam, awayTeam, homeScore, awayScore, homeFlag, awayFlag, startingTime}) => {
+  const { setScoreFormOpen, setInitialNewScoreData } = useStoreActions((action) => action.ui)
+
+  const handleNewScore = () => {
+    setInitialNewScoreData({homeTeam, awayTeam})
+    setScoreFormOpen(true)
+  }
   return ( 
     <div className='grid items-center grid-cols-3 p-4 bg-white border border-gray-100 rounded-md shadow-md select-none'>
         <div className='flex flex-col items-center'>
-          <Flag className='inline object-cover w-10 h-10 mr-2 border border-gray-100 rounded-full shadow-md' code={homeFlag} fallback={ <span>Unknown</span> }/>
+          <Flag className='inline object-cover w-10 h-10 mr-2 border border-gray-100 rounded-full shadow-md' code={homeFlag} fallback={ <span className='text-xs text-red-600'>noFlag</span> }/>
           <div className='text-center'>{homeTeam}</div>
         </div>
         <div>
@@ -11,7 +19,7 @@ const PredictionCard = ({ homeTeam, awayTeam, homeScore, awayScore, homeFlag, aw
             <div className='text-xs uppercase'>Starting date</div>
             <div className='text-xs'>{startingTime}</div>
             <div
-              onClick={() => alert('Siia ennustus asi')}
+              onClick={() => handleNewScore()}
               className='mt-2 text-3xl '>
                 {homeScore} : {awayScore}
             </div>
@@ -19,7 +27,7 @@ const PredictionCard = ({ homeTeam, awayTeam, homeScore, awayScore, homeFlag, aw
           </div>
         </div>
         <div className='flex flex-col items-center'>
-        <Flag className='inline object-cover w-10 h-10 mr-2 border border-gray-100 rounded-full shadow-md' code={awayFlag} fallback={ <span>Unknown</span> }/>
+        <Flag className='inline object-cover w-10 h-10 mr-2 border border-gray-100 rounded-full shadow-md' code={awayFlag} fallback={ <span className='text-xs text-red-600'>noFlag</span> }/>
           <div className='text-center'>{awayTeam}</div>
         </div>
       </div>

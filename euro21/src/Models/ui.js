@@ -4,6 +4,9 @@ export const ui =  {
   authFormOpen: false,
   authType: 'login',
   authErrorMsg: null,
+  newScoreFormOpen: false,
+  initialNewScoreData: {},
+  newGameFormOpen: false,
   setAuthForm: action((state, newState) => {
     state.authFormOpen = newState[0]
     state.authType = newState[1]
@@ -16,5 +19,15 @@ export const ui =  {
   }),
   onAuthSuccess: actionOn((action, storeActions) => storeActions.user.setIsLoggedIn, (state, target) => {
     state.authFormOpen = false
+  }),
+  setScoreFormOpen: action((state, newState) => {
+    state.newScoreFormOpen = newState
+  }),
+  setNewGameFormOpen: action((state, newState) => {
+    state.newGameFormOpen = newState
+  }),
+  setInitialNewScoreData: action((state, newState) => {
+    const { homeTeam, awayTeam, homeScore, awayScore} = newState
+    state.initialNewScoreData = newState
   })
 }
