@@ -17,11 +17,11 @@ const Tournament = () => {
   useEffect(() => {
     fetchTournaData();
   }, []);
-  
+  console.log(matches)
   return (
     <div className='grid gap-4 md:grid-cols-3'>
       
-      {matches ? matches.map(({ data:{
+      {matches ? matches.map(({uniqueId, data:{
         homeTeam,
         homeFlag,
         homeScore,
@@ -30,7 +30,10 @@ const Tournament = () => {
         awayScore,
         startingTime}}) => (
         <PredictionCard
-        key={Math.random(100)}
+
+        key={uniqueId}
+        matchId={uniqueId}
+        tournamentId={id}
         homeTeam={homeTeam}
         homeFlag={homeFlag}
         homeScore={homeScore ? homeScore : '-'}

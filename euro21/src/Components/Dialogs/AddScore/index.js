@@ -1,25 +1,40 @@
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { Dialog, Transition } from "@headlessui/react";
 import NumPad from "../../NumPad";
+
+import http from "../../../http";
 const NewScore = () => {
   const { initialNewScoreData } = useStoreState(state => state.ui)
   const { newScoreFormOpen } = useStoreState((state) => state.ui)
   const { setScoreFormOpen } = useStoreActions((action) => action.ui)
   const { homeTeam, awayTeam, homeScore, awayScore } = initialNewScoreData
-  const handleClose = () => {
+  const [teamSeleceted, setTeamSeleceted] = useState(homeTeam);
+  
+  const handleClose = async () => {
     setScoreFormOpen(false)
+    if(!initialNewScoreData.homeScore || !initialNewScoreData.awayScore) return
+    try {
+      const addNewPrediction = await http.post('/predictions', {...initialNewScoreData})
+      console.log(addNewPrediction.status)
+      if(addNewPrediction.status === 200){
+        console.log('fetch new data')
+      }
+    } catch (error) {
+      console.log(error)
+    } 
   }
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    
-  }
+  useEffect(() => {
+    if(initialNewScoreData) {
+      setTeamSeleceted(homeTeam)
+    }
+  }, [initialNewScoreData, homeTeam, awayTeam]);
   return (
     <div>
     <Transition appear show={newScoreFormOpen} as={Fragment}>
         <Dialog
           as="div"
-          className="fixed inset-0 z-10 overflow-y-auto"
+          className="fixed inset-0 z-10 overflow-y-auto "
           onClose={() => handleClose()}
         >
           <div className="min-h-screen px-4 text-center">
@@ -52,22 +67,30 @@ const NewScore = () => {
                 </Dialog.Title>
                 <div>
                   <div className='flex justify-around p-2 text-4xl'>
-                    <div>{homeScore ? homeScore : '-'}</div>
-                    {/* <div>:</div> */}
-                    <div>{awayScore ? awayScore : '-'}</div>
+                    <div onClick={() => setTeamSeleceted(homeTeam)}
+                      className={`p-2 cursor-pointer ${teamSeleceted === homeTeam &&
+                      'border-b-2 border-blue-400 '}`}>
+                        {homeScore ? homeScore : '-'}
+                    </div>
+                    
+                    <div onClick={() => setTeamSeleceted(awayTeam)}
+                      className={`p-2 cursor-pointer ${teamSeleceted === awayTeam &&
+                      'border-b-2 border-blue-400'}`}>
+                        {awayScore ? awayScore : '-'}
+                    </div>
                   </div>
                   <div className="flex justify-center w-full">
-                    <NumPad />
+                    <NumPad selectedTeam={teamSeleceted}/>
                   </div>
                 </div>
 
                 <div className="mt-4">
                   <button
                     type="button"
-                    className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                    className="inline-flex justify-center px-4 py-2 text-sm font-medium text-green-900 bg-green-100 border border-transparent rounded-md hover:bg-green-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-green-500"
                     onClick={() => handleClose()}
                   >
-                    Close
+                    Save
                   </button>
                 </div>
               </div>

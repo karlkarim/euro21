@@ -1,12 +1,14 @@
 import Flag from 'react-world-flags'
-import { useStoreActions } from 'easy-peasy';
+import { useStoreActions, useStoreState } from 'easy-peasy';
 
-const PredictionCard = ({ homeTeam, awayTeam, homeScore, awayScore, homeFlag, awayFlag, startingTime}) => {
+const PredictionCard = ({ homeTeam, awayTeam, homeScore, awayScore, homeFlag, awayFlag, startingTime, matchId, tournamentId }) => {
   const { setScoreFormOpen, setInitialNewScoreData } = useStoreActions((action) => action.ui)
-
-  const handleNewScore = () => {
-    setInitialNewScoreData({homeTeam, awayTeam})
+  const { userdata } = useStoreState(state => state.user)
+  const { initialNewScoreData } = useStoreState(state => state.ui)
+  const handleNewScore = async () => {
+    setInitialNewScoreData({homeTeam, awayTeam, matchId, tournamentId, userId: userdata.uniqueId})
     setScoreFormOpen(true)
+    
   }
   return ( 
     <div className='grid items-center grid-cols-3 p-4 bg-white border border-gray-100 rounded-md shadow-md select-none'>
