@@ -16,7 +16,7 @@ const NewScore = () => {
     if(!initialNewScoreData.homeScore || !initialNewScoreData.awayScore) return
     try {
       const addNewPrediction = await http.post('/predictions', {...initialNewScoreData})
-      console.log(addNewPrediction.status)
+      console.log(addNewPrediction.data.data.userId)
       if(addNewPrediction.status === 200){
         console.log('fetch new data')
       }

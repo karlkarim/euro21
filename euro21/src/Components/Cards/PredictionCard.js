@@ -2,6 +2,7 @@ import Flag from 'react-world-flags'
 import { useStoreActions, useStoreState } from 'easy-peasy';
 
 const PredictionCard = ({ homeTeam, awayTeam, homeScore, awayScore, homeFlag, awayFlag, startingTime, matchId, tournamentId }) => {
+  console.log(awayFlag)
   const { setScoreFormOpen, setInitialNewScoreData } = useStoreActions((action) => action.ui)
   const { userdata } = useStoreState(state => state.user)
   const { initialNewScoreData } = useStoreState(state => state.ui)
