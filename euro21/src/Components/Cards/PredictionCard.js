@@ -7,7 +7,7 @@ const PredictionCard = ({ homeTeam, awayTeam, homeScore, awayScore, homeFlag, aw
   const { userdata } = useStoreState(state => state.user)
   const { initialNewScoreData } = useStoreState(state => state.ui)
   const handleNewScore = async () => {
-    setInitialNewScoreData({homeTeam, awayTeam, matchId, tournamentId, userId: userdata.uniqueId})
+    setInitialNewScoreData({homeTeam, homeFlag, awayFlag, awayTeam, matchId, tournamentId, userId: userdata.uniqueId})
     setScoreFormOpen(true)
     
   }

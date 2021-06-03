@@ -33,6 +33,7 @@ export const predictions = {
     }
   }),
   addNewPrediction: thunk(async (action, payload) => {
+    console.log(payload)
     try {
       const response = await http.post('/predictions', payload)
       console.log(response.data)

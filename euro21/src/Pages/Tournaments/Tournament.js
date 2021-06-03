@@ -8,7 +8,6 @@ import http from "../../http";
 const Tournament = () => {
   const [pickNeeded, setPickNeeded] = useState(null);
   const [matches, setMatches] = useState(null);
-  const [predictions, setPredictions] = useState(null);
   const [matchToggle, setMatchToggle] = useState('needsPick');
   const [toggling, setToggling] = useState(false);
   const { userdata } = useStoreState(state => state.user)
@@ -23,17 +22,18 @@ const Tournament = () => {
       pred.data.map(({data: { matchId }}) => (
         predictedIds.push(matchId)
       ))
-      setPredictions(pred.data)
+      
       if(pickType === 'needsPick') {
         const pickNeeded = mathces.data.filter(match => !predictedIds.includes( match.uniqueId ) )
         setMatches(pickNeeded)
         setToggling(false)
-      } else {
-        const pickNeeded = mathces.data.filter(match => predictedIds.includes( match.uniqueId ) )
-        setMatches(predictions)
+      }
+      if(pickType === 'picked') {
+        const pred = await http.get('/predictions',{ params: {jsonata:`[$[data.userId="${userdata.uniqueId}"]]`}})
+        setMatches(pred.data)
         setToggling(false)
       }
-
+      return
     } catch (error) {
       console.log("error", error);
     }
@@ -41,7 +41,7 @@ const Tournament = () => {
   useEffect(() => {
     fetchTournaData(matchToggle);
   }, [matchToggle]);
-  console.log(matches)
+  
   return (
     <div>
       <div className='flex justify-around mb-2'>
@@ -54,13 +54,15 @@ const Tournament = () => {
           className={`hover:bg-blue-200 cursor-pointer transition-all ease-in-out delay-75 border-b-2 border-white rounded-tr-md w-full p-1 text-center bg-blue-100 ${matchToggle === 'picked' ? 'border-blue-500 text-lg': ''}`}>Predicted</div>
       </div>
       <div className='grid gap-4 md:grid-cols-3'>
-        
+        {/* <div className='col-span-3 text-center'>
+          <Loader />
+        </div> */}
         {matches && !toggling ? matches.map(({uniqueId, data:{
           homeTeam,
           homeFlag,
           homeScore,
           awayTeam,
-          awayflag,
+          awayFlag,
           awayScore,
           startingTime}}) => (
           <PredictionCard
@@ -72,7 +74,7 @@ const Tournament = () => {
           homeScore={homeScore ? homeScore : '-'}
           startingTime={startingTime}
           awayTeam={awayTeam}
-          awayFlag={awayflag}
+          awayFlag={awayFlag}
           awayScore={awayScore ? awayScore : '-'}
         />
         )): (<Loader />)}
