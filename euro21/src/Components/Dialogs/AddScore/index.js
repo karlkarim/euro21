@@ -79,13 +79,13 @@ const NewScore = () => {
                   <div className='flex justify-around p-2 text-4xl'>
                     <div onClick={() => setTeamSeleceted(homeTeam)}
                       className={`p-2 cursor-pointer ${teamSeleceted === homeTeam &&
-                      'border-b-2 border-blue-400 '}`}>
+                      'border-b-2 border-uefa-dark '}`}>
                         {homeScore ? homeScore : '-'}
                     </div>
                     
                     <div onClick={() => setTeamSeleceted(awayTeam)}
                       className={`p-2 cursor-pointer ${teamSeleceted === awayTeam &&
-                      'border-b-2 border-blue-400'}`}>
+                      'border-b-2 border-uefa-dark'}`}>
                         {awayScore ? awayScore : '-'}
                     </div>
                   </div>
@@ -97,7 +97,7 @@ const NewScore = () => {
                 <div className="mt-4">
                   <button
                     type="button"
-                    className="inline-flex justify-center px-4 py-2 text-sm font-medium text-green-900 bg-green-100 border border-transparent rounded-md hover:bg-green-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-green-500"
+                    className="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-100 border border-transparent rounded-md bg-uefa-dark hover:bg-uefa-light focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-uefa-dark"
                     onClick={() => handleClose()}
                   >
                     Save

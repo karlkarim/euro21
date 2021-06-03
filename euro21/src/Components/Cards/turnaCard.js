@@ -1,5 +1,8 @@
+import { useGetOwner } from "../../hooks/useGetOwner";
+
 /* eslint-disable jsx-a11y/alt-text */
-const TurnaCard = ({ name, owner, bckImg, onClick }) => {
+const TurnaCard = ({ name, owner:ownerId, bckImg, onClick }) => {
+  const owner = useGetOwner(ownerId)
   return (
     <div onClick={() => onClick()} className="flex flex-col max-w-lg space-y-2 bg-white shadow-md cursor-pointer md:max-w-sm rounded-xl">
       <img

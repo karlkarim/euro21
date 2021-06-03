@@ -5,7 +5,12 @@ module.exports = {
     fontFamily: {
       poppins: ['Poppins'],
     },
-    extend: {},
+    extend: {
+      colors: {
+        'uefa-dark': '#1C5E6C',
+        'uefa-light': '#277A8C'
+      },
+    },
   },
   variants: {
     extend: {},
