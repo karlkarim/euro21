@@ -29,6 +29,7 @@ const NewScore = () => {
       setTeamSeleceted(homeTeam)
     }
   }, [initialNewScoreData, homeTeam, awayTeam]);
+  console.log(homeScore, awayScore)
   return (
     <div>
     <Transition appear show={newScoreFormOpen} as={Fragment}>
