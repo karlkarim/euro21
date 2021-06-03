@@ -6,12 +6,11 @@ import Loader from "../../Components/Loader";
 import http from "../../http";
 
 const Tournament = () => {
-  const [pickNeeded, setPickNeeded] = useState(null);
   const [matches, setMatches] = useState(null);
   const [matchToggle, setMatchToggle] = useState('needsPick');
   const [toggling, setToggling] = useState(false);
   const { userdata } = useStoreState(state => state.user)
-  const { fetchPickNeeded } = useStoreActions(action => action.predictions)
+  const { fetchGamesAgain } = useStoreState(state => state.ui)
   const { id } = useParams();
   const fetchTournaData = async (pickType) => {
     let predictedIds = [] 
@@ -40,7 +39,7 @@ const Tournament = () => {
   };
   useEffect(() => {
     fetchTournaData(matchToggle);
-  }, [matchToggle]);
+  }, [matchToggle, fetchGamesAgain]);
   
   return (
     <div>
@@ -48,10 +47,10 @@ const Tournament = () => {
         
         <div
           onClick={() => setMatchToggle('needsPick')}
-          className={`hover:bg-blue-200 cursor-pointer transition-all ease-in-out delay-75 border-b-2 border-white rounded-tl-md w-full p-1 text-center bg-blue-100 ${matchToggle === 'needsPick' ? 'border-blue-500 text-lg': ''}`}>Pick needed</div>
+          className={`hover:bg-uefa-light cursor-pointer text-gray-100 transition-all ease-in-out delay-75 border-b-2 border-white rounded-tl-md w-full p-1 text-center bg-uefa-dark ${matchToggle === 'needsPick' ? 'border-uefa-dark text-white bg-uefa-light text-lg': ''}`}>Pick needed</div>
         <div
           onClick={() => setMatchToggle('picked')}
-          className={`hover:bg-blue-200 cursor-pointer transition-all ease-in-out delay-75 border-b-2 border-white rounded-tr-md w-full p-1 text-center bg-blue-100 ${matchToggle === 'picked' ? 'border-blue-500 text-lg': ''}`}>Predicted</div>
+          className={`hover:bg-uefa-light cursor-pointer text-gray-100 transition-all ease-in-out delay-75 border-b-2 border-white rounded-tr-md w-full p-1 text-center bg-uefa-dark ${matchToggle === 'picked' ? 'border-uefa-dark text-white bg-uefa-light text-lg': ''}`}>Predicted</div>
       </div>
       <div className='grid gap-4 md:grid-cols-3'>
         {matches && !toggling ? matches.map(({uniqueId, data:{
@@ -63,6 +62,7 @@ const Tournament = () => {
           awayScore,
           startingTime}}) => (
           <PredictionCard
+          method={matchToggle === 'needsPick' ? 'new' : 'edit'}
           key={uniqueId}
           matchId={uniqueId}
           tournamentId={id}
