@@ -1,15 +1,20 @@
 import Flag from 'react-world-flags'
 import { useStoreActions, useStoreState } from 'easy-peasy';
 
-const PredictionCard = ({ homeTeam, awayTeam, homeScore, awayScore, homeFlag, awayFlag, startingTime, matchId, tournamentId }) => {
-  console.log(awayFlag)
+const PredictionCard = ({ method, homeTeam, awayTeam, homeScore, awayScore, homeFlag, awayFlag, startingTime, matchId, tournamentId }) => {
+  
   const { setScoreFormOpen, setInitialNewScoreData } = useStoreActions((action) => action.ui)
   const { userdata } = useStoreState(state => state.user)
-  const { initialNewScoreData } = useStoreState(state => state.ui)
+
   const handleNewScore = async () => {
-    setInitialNewScoreData({homeTeam, homeFlag, awayFlag, awayTeam, matchId, tournamentId, userId: userdata.uniqueId})
+      setInitialNewScoreData({method: 'new',homeTeam, homeFlag, awayFlag, awayTeam, matchId, tournamentId, userId: userdata.uniqueId})
     setScoreFormOpen(true)
     
+  }
+  const handleEdit = (uniqueId) => {
+    setInitialNewScoreData({method: 'edit', homeScore, awayScore, homeTeam, homeFlag, awayFlag, awayTeam, uniqueId})
+    setScoreFormOpen(true)
+    console.log('editing')
   }
   return ( 
     <div className='grid items-center grid-cols-3 p-4 bg-white border border-gray-100 rounded-md shadow-md select-none'>
@@ -22,11 +27,11 @@ const PredictionCard = ({ homeTeam, awayTeam, homeScore, awayScore, homeFlag, aw
             <div className='text-xs uppercase'>Starting date</div>
             <div className='text-xs'>{startingTime}</div>
             <div
-              onClick={() => handleNewScore()}
+              onClick={method === 'new' ? () => handleNewScore() : () => handleEdit(matchId)}
               className='mt-2 text-3xl '>
                 {homeScore} : {awayScore}
             </div>
-                <div className='absolute text-xs text-red-400 -bottom-3'>Pick needed</div>
+                {method === 'new' && <div className='absolute text-xs text-red-400 -bottom-3'>Pick needed</div>}
           </div>
         </div>
         <div className='flex flex-col items-center'>

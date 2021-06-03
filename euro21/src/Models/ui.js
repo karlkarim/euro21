@@ -7,6 +7,7 @@ export const ui =  {
   newScoreFormOpen: false,
   initialNewScoreData: {},
   newGameFormOpen: false,
+  fetchGamesAgain: false,
   setAuthForm: action((state, newState) => {
     state.authFormOpen = newState[0]
     state.authType = newState[1]
@@ -27,7 +28,9 @@ export const ui =  {
     state.newGameFormOpen = newState
   }),
   setInitialNewScoreData: action((state, newState) => {
-    const { homeTeam, awayTeam, homeScore, awayScore} = newState
     state.initialNewScoreData = newState
+  }),
+  setFetchNewGamesAgain: action((state, newState) => {
+    state.fetchGamesAgain = newState
   })
 }

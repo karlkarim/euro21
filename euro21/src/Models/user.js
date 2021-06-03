@@ -1,5 +1,5 @@
 import { action, thunk } from "easy-peasy";
-import { auth, db } from "../firebase/config";
+import { auth } from "../firebase/config";
 import http from "../http";
 
 export const user = {

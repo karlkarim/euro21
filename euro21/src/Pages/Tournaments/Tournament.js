@@ -6,12 +6,11 @@ import Loader from "../../Components/Loader";
 import http from "../../http";
 
 const Tournament = () => {
-  const [pickNeeded, setPickNeeded] = useState(null);
   const [matches, setMatches] = useState(null);
   const [matchToggle, setMatchToggle] = useState('needsPick');
   const [toggling, setToggling] = useState(false);
   const { userdata } = useStoreState(state => state.user)
-  const { fetchPickNeeded } = useStoreActions(action => action.predictions)
+  const { fetchGamesAgain } = useStoreState(state => state.ui)
   const { id } = useParams();
   const fetchTournaData = async (pickType) => {
     let predictedIds = [] 
@@ -40,7 +39,7 @@ const Tournament = () => {
   };
   useEffect(() => {
     fetchTournaData(matchToggle);
-  }, [matchToggle]);
+  }, [matchToggle, fetchGamesAgain]);
   
   return (
     <div>
@@ -63,6 +62,7 @@ const Tournament = () => {
           awayScore,
           startingTime}}) => (
           <PredictionCard
+          method={matchToggle === 'needsPick' ? 'new' : 'edit'}
           key={uniqueId}
           matchId={uniqueId}
           tournamentId={id}
