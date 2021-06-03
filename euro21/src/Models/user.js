@@ -33,8 +33,8 @@ export const user = {
     const { email, password, username } = payload
     try {
       const usernameExists = await http.get('/users', {params:{jsonata: `[$[data.username="${username}"]]`}})
-      
-      if(!usernameExists.length) {
+      console.log(usernameExists)
+      if(usernameExists.data.length) {
         return action.setAuthError('Username already taken!')
       } else {
         const resp = await auth.createUserWithEmailAndPassword(email, password)

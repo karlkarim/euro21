@@ -54,9 +54,6 @@ const Tournament = () => {
           className={`hover:bg-blue-200 cursor-pointer transition-all ease-in-out delay-75 border-b-2 border-white rounded-tr-md w-full p-1 text-center bg-blue-100 ${matchToggle === 'picked' ? 'border-blue-500 text-lg': ''}`}>Predicted</div>
       </div>
       <div className='grid gap-4 md:grid-cols-3'>
-        {/* <div className='col-span-3 text-center'>
-          <Loader />
-        </div> */}
         {matches && !toggling ? matches.map(({uniqueId, data:{
           homeTeam,
           homeFlag,
@@ -77,7 +74,9 @@ const Tournament = () => {
           awayFlag={awayFlag}
           awayScore={awayScore ? awayScore : '-'}
         />
-        )): (<Loader />)}
+        )): (<div className='col-start-2 justify-items-center'>
+        <Loader />
+      </div>)}
       </div>
     </div>
   );
