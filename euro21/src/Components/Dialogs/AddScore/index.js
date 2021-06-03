@@ -5,9 +5,8 @@ import NumPad from "../../NumPad";
 
 import http from "../../../http";
 const NewScore = () => {
-  const { initialNewScoreData } = useStoreState(state => state.ui)
-  const { newScoreFormOpen } = useStoreState((state) => state.ui)
-  const { setScoreFormOpen } = useStoreActions((action) => action.ui)
+  const { initialNewScoreData, fetchGamesAgain, newScoreFormOpen } = useStoreState(state => state.ui)
+  const { setScoreFormOpen, setFetchNewGamesAgain } = useStoreActions((action) => action.ui)
   const { homeTeam, awayTeam, homeScore, awayScore } = initialNewScoreData
   const [teamSeleceted, setTeamSeleceted] = useState(homeTeam);
   
@@ -15,10 +14,20 @@ const NewScore = () => {
     setScoreFormOpen(false)
     if(!initialNewScoreData.homeScore || !initialNewScoreData.awayScore) return
     try {
-      const addNewPrediction = await http.post('/predictions', {...initialNewScoreData})
-      console.log(addNewPrediction.data.data.userId)
-      if(addNewPrediction.status === 200){
-        console.log('fetch new data')
+      if(initialNewScoreData.method === 'new'){
+        const addNewPrediction = await http.post('/predictions', {...initialNewScoreData})
+        console.log(addNewPrediction.data.data.userId)
+        if(addNewPrediction.status === 201){
+          setFetchNewGamesAgain(!fetchGamesAgain)
+        }
+      }
+      if(initialNewScoreData.method === 'edit') {
+        const editPrediction = await http.put('/predictions', { homeScore, awayScore },
+        { params: { strategy: "merge", uniqueId: initialNewScoreData.uniqueId } })
+        console.log(editPrediction.data.data.userId)
+        if(editPrediction.status === 201){
+          setFetchNewGamesAgain(!fetchGamesAgain)
+        }
       }
     } catch (error) {
       console.log(error)
