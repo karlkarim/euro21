@@ -1,11 +1,12 @@
-import { UserCircleIcon, UsersIcon } from "@heroicons/react/outline";
-import { useGetOwner } from "../../hooks/useGetOwner";
-import cat from '../../assets/default.png'
-import { useGetParticipantsCount } from '../../hooks/useGetParticipantsCount';
 /* eslint-disable jsx-a11y/alt-text */
+import { UsersIcon } from "@heroicons/react/outline";
+import { useGetOwner } from "../../hooks/useGetOwner";
+import { useGetParticipantsCount } from '../../hooks/useGetParticipantsCount';
 const TurnaCard = ({ name, owner:ownerId, bckImg, onClick, turnaId }) => {
+
   const owner = useGetOwner(ownerId)
   const participants = useGetParticipantsCount(turnaId)
+  
   return (
     <div onClick={() => onClick()} className="flex flex-col max-w-lg space-y-2 bg-white shadow-md cursor-pointer md:max-w-sm rounded-xl">
       <img

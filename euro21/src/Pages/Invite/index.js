@@ -9,8 +9,7 @@ import { useGetTurnaName } from '../../hooks/useGetTurnaName';
 
 const Invite = () => {
   const { id } = useParams()
-  const { authFormOpen, authType, authErrorMsg } = useStoreState((state) => state.ui);
-  const { setAuthForm, clearAuthMsg } = useStoreActions((action) => action.ui);
+  const { authErrorMsg } = useStoreState((state) => state.ui);
   const { isLoggedIn } = useStoreState((state) => state.user);
   const { userSignupWithInvite } = useStoreActions((action => action.user))
   const [username, setUsername] = useState('');

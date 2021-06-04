@@ -1,21 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Suspense, useEffect } from 'react'
 import { Route, Switch } from "react-router-dom";
+import { useStoreActions } from 'easy-peasy';
 import { routes } from "./Routes";
 import AuthForm from './Components/Auth/Form'
-
-import { useStoreActions } from 'easy-peasy';
 import Wrapper from './Components/Wrapper';
-import { useStoreState } from 'easy-peasy';
-import { useHistory } from 'react-router-dom';
 import NewScore from './Components/Dialogs/AddScore/index';
 import Loader from './Components/Loader';
-import moment from 'moment';
-
 
 function App() {
   const { resumeLogin } = useStoreActions(action => action.user)
-  const { isLoggedIn } = useStoreState(state => state.user)
   
   useEffect(() => {
     resumeLogin()

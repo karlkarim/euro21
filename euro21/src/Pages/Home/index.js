@@ -1,34 +1,20 @@
 import Auth from '../../Components/Auth/index';
 import party from '../../assets/party.svg'
 
-//<Auth />
-
 const Home = () => {
   return ( 
-    <div>
-    
-    
-    
-        <div class="px-20 py-4">
-          
-           <div class=" max-w-lg">
-               <img src={party} />
-            </div>
-            <div class="lg:2/6 xl:w-2/4 mt-7 lg:mt-10 lg:ml-16 text-left">
-            <div class="text-4xl font-semibold text-gray-900 leading-none">Bring out your Oracle Power!</div>
-            <div class="mt-3 text-xl font-light text-true-gray-500 antialiased">Join with others and win-win prizes</div>
-
+  <div className='flex flex-col items-center mx-5 mt-20'>
+      <div className="max-w-lg ">
+        <img src={party} alt='prediction'/>
+      </div>
+      <div className="text-left lg:2/6 xl:w-2/4 mt-7 lg:mt-10 lg:ml-16">
+        <div className="text-4xl font-semibold leading-none text-gray-900">Bring out your Oracle Power!</div>
+        <div className="mt-3 text-xl antialiased font-light text-true-gray-500">Join with others and win-win prizes</div>
         <Auth /> 
-       
-        </div>
-        </div>
-        </div>
-  
-    
-    
-    
-    
-   );
+      </div>
+      <div className='fixed bottom-2 '>Made with ❤️ by Rain&Karl</div>
+  </div>
+  );
 }
  
 export default Home;

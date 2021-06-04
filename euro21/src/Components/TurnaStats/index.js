@@ -64,8 +64,8 @@ const TurnaStats = () => {
                   </Dialog.Title>
                   <div className="mt-2">
                     <div className="space-y-2 text-gray-800">
-                      {leaderboard ? leaderboard.map(({data:{userId, points}}) => (
-                        <Leaderboard name={userId} points={points}/>
+                      {leaderboard ? leaderboard.map(({data:{userId, points}}, i) => (
+                        <Leaderboard pos={i+1} name={userId} points={points}/>
                       )): <Loader />}
                     </div>
                   </div>
@@ -90,7 +90,7 @@ const TurnaStats = () => {
           {({ open }) => (
             <>
               <Disclosure.Button className="flex justify-between w-full px-4 py-2 text-sm font-medium text-white rounded-lg bg-uefa-dark hover:bg-uefa-light focus:outline-none focus-visible:ring focus-visible:ring-uefa-dark focus-visible:ring-opacity-75">
-                <div className='flex uppercase'><ChartBarIcon className='w-5 h-5'/> &nbsp; {turnaName} <span className='lowercase'>statistika</span></div>
+                <div className='flex uppercase'><ChartBarIcon className='w-5 h-5'/>&nbsp;{turnaName}&nbsp;<span className='lowercase'>stats</span></div>
                 <ChevronUpIcon
                   className={`${
                     open ? 'transform rotate-180' : ''
@@ -110,7 +110,7 @@ const TurnaStats = () => {
                 </div>
                 <button
                   onClick={openModal}
-                  className='w-full py-1.5 mt-6 text-white uppercase rounded-md bg-uefa-dark hover:bg-uefa-light'>Leaderboard</button>
+                  className='w-full py-1.5 mt-6 text-white uppercase rounded-md bg-uefa-dark hover:bg-uefa-light border border-transparent focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-uefa-dark'>Leaderboard</button>
               </Disclosure.Panel>
             </>
           )}
