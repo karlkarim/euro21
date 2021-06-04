@@ -1,10 +1,11 @@
-import { UserCircleIcon } from "@heroicons/react/outline";
+import { UserCircleIcon, UsersIcon } from "@heroicons/react/outline";
 import { useGetOwner } from "../../hooks/useGetOwner";
 import cat from '../../assets/default.png'
+import { useGetParticipantsCount } from '../../hooks/useGetParticipantsCount';
 /* eslint-disable jsx-a11y/alt-text */
-const TurnaCard = ({ name, owner:ownerId, bckImg, onClick }) => {
+const TurnaCard = ({ name, owner:ownerId, bckImg, onClick, turnaId }) => {
   const owner = useGetOwner(ownerId)
-
+  const participants = useGetParticipantsCount(turnaId)
   return (
     <div onClick={() => onClick()} className="flex flex-col max-w-lg space-y-2 bg-white shadow-md cursor-pointer md:max-w-sm rounded-xl">
       <img
@@ -18,8 +19,9 @@ const TurnaCard = ({ name, owner:ownerId, bckImg, onClick }) => {
         </div>
         <div className="flex">
           <div className="flex items-center flex-1 text-sm ">Created by&nbsp;<span className='font-medium'>{owner}</span></div>
-          <div className="-space-x-6">
-            <UserCircleIcon className='w-10 h-10'/>
+          <div className="flex items-center space-x-1 text-uefa-dark">
+            <div>{participants}</div>
+            <UsersIcon className='w-4 h-4'/>
           </div>
         </div>
       </div>
