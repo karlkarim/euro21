@@ -1,5 +1,6 @@
 export const ROUTES = {
   APP: '/app',
   LANDING: '/',
-  TOURNAMENT: '/app/tournament'
+  TOURNAMENT: '/app/tournament',
+  INVITE: '/app/tournament/invite'
 }

@@ -54,6 +54,39 @@ export const user = {
       action.setAuthError(message)
     }
   }),
+  userSignupWithInvite: thunk(async (action, payload) => {
+    const { email, password, username, gameId } = payload
+    console.log(gameId)
+    try {
+      const usernameExists = await http.get('/users', {params:{jsonata: `[$[data.username="${username}"]]`}})
+      console.log(usernameExists)
+      if(usernameExists.data.length) {
+        return action.setAuthError('Username already taken!')
+      } else {
+        const resp = await auth.createUserWithEmailAndPassword(email, password)
+        if(resp.user) {
+          const addNewUser = await http.post('/users', {
+            username,
+            email,
+            avatar: null,
+            createdAt: new Date()
+          })
+        const userId = addNewUser.data.uniqueId
+        const newGameUser = await http.post('/game-users', {
+          userId,
+          isOwner: false,
+          gameId
+        })
+        console.log('newGameUser', newGameUser.data);
+        action.setUserData({username, email, avatar: null})
+        action.setIsLoggedIn(true)
+        }
+      }
+    } catch (error) {
+      const { message } = error
+      action.setAuthError(message)
+    }
+  }),
   resumeLogin: thunk(async (action, payload) => {
     try {
       auth.onAuthStateChanged(async (user) => {

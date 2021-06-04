@@ -3,15 +3,18 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import PredictionCard from "../../Components/Cards/PredictionCard";
 import Loader from "../../Components/Loader";
+import TurnaStats from "../../Components/TurnaStats";
 import http from "../../http";
-
+import {CopyToClipboard} from 'react-copy-to-clipboard';
 const Tournament = () => {
   const [matches, setMatches] = useState(null);
   const [matchToggle, setMatchToggle] = useState('needsPick');
   const [toggling, setToggling] = useState(false);
   const { userdata } = useStoreState(state => state.user)
   const { fetchGamesAgain } = useStoreState(state => state.ui)
+  const [copied, setCopied] = useState(false);
   const { id } = useParams();
+  const shareLink = `http://localhost:3000/app/tournament/invite/${id}`
   const fetchTournaData = async (pickType) => {
     let predictedIds = [] 
     try {
@@ -43,6 +46,12 @@ const Tournament = () => {
   
   return (
     <div>
+      <CopyToClipboard text={shareLink}
+          onCopy={() => setCopied(true)}>
+          <button className='text-sm text-uefa-light bg-gray-100 rounded-md px-1 py-0.5'>{copied ? 'Link copied!': 'Copy link to invite others'}</button>
+        </CopyToClipboard>
+        
+      <TurnaStats />
       <div className='flex justify-around mb-2'>
         
         <div

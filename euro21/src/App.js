@@ -9,6 +9,7 @@ import Wrapper from './Components/Wrapper';
 import { useStoreState } from 'easy-peasy';
 import { useHistory } from 'react-router-dom';
 import NewScore from './Components/Dialogs/AddScore/index';
+import Loader from './Components/Loader';
 
 
 function App() {
@@ -18,12 +19,16 @@ function App() {
     resumeLogin()
   }, []);
 
-  
+  const WaitingForContent = () => (
+    <div className='absolute inset-0 z-20 flex justify-center w-full h-full pt-40 bg-uefa-dark'>
+        <Loader />
+    </div>
+  )
   return (
     <div>
       <AuthForm />
       <NewScore />
-      <Suspense fallback='Loading'>
+      <Suspense fallback={<WaitingForContent />}>
         <Switch>
           <Wrapper>
           {routes().map(({path, component}, i) => (
