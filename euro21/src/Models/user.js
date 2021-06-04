@@ -75,7 +75,8 @@ export const user = {
         const newGameUser = await http.post('/game-users', {
           userId,
           isOwner: false,
-          gameId
+          gameId,
+          points: 0
         })
         console.log('newGameUser', newGameUser.data);
         action.setUserData({username, email, avatar: null})
