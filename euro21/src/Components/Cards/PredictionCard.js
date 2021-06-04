@@ -15,7 +15,6 @@ const PredictionCard = ({ method, homeTeam, awayTeam, homeScore, awayScore, home
   const handleEdit = (uniqueId) => {
     setInitialNewScoreData({method: 'edit', homeScore, awayScore, homeTeam, homeFlag, awayFlag, awayTeam, uniqueId})
     setScoreFormOpen(true)
-    console.log('editing')
   }
   return ( 
     <div className='grid items-center grid-cols-3 p-4 bg-white border border-gray-100 rounded-md shadow-md select-none'>

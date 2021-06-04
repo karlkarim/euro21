@@ -18,12 +18,11 @@ export const predictions = {
       ))
       await Promise.all(
         predictedIds.map(async (id) => {
-          console.log('id', id);
           const response = await http.get('/matches', {params: {jsonata: `[$[uniqueId!="${id}"]]`}})
-          const finalMatches = response.data.map(({uniqueId, data}) => ({
+          response.data.map(({uniqueId, data}) => ({
             uniqueId, ...data
           }))
-          console.log('finalMatches', finalMatches);
+
           mathcesTopredict = response.data
         })
       )
@@ -33,10 +32,8 @@ export const predictions = {
     }
   }),
   addNewPrediction: thunk(async (action, payload) => {
-    console.log(payload)
     try {
       const response = await http.post('/predictions', payload)
-      console.log(response.data)
       if(response.status === 200){
         thunk.fetchPickNeeded(response.data.data.userId)
       }

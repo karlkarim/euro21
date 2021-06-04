@@ -16,7 +16,6 @@ const NewScore = () => {
     try {
       if(initialNewScoreData.method === 'new'){
         const addNewPrediction = await http.post('/predictions', {...initialNewScoreData})
-        console.log(addNewPrediction.data.data.userId)
         if(addNewPrediction.status === 201){
           setFetchNewGamesAgain(!fetchGamesAgain)
         }
@@ -24,7 +23,6 @@ const NewScore = () => {
       if(initialNewScoreData.method === 'edit') {
         const editPrediction = await http.put('/predictions', { homeScore, awayScore },
         { params: { strategy: "merge", uniqueId: initialNewScoreData.uniqueId } })
-        console.log(editPrediction.data.data.userId)
         if(editPrediction.status === 201){
           setFetchNewGamesAgain(!fetchGamesAgain)
         }
@@ -38,7 +36,7 @@ const NewScore = () => {
       setTeamSeleceted(homeTeam)
     }
   }, [initialNewScoreData, homeTeam, awayTeam]);
-  console.log(homeScore, awayScore)
+
   return (
     <div>
     <Transition appear show={newScoreFormOpen} as={Fragment}>

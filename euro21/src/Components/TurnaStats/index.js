@@ -9,13 +9,18 @@ import { Dialog, Transition } from '@headlessui/react'
 import { useGetLeaderBoard } from '../../hooks/useGetLeaderboard'
 import Leaderboard from './Leaderboard'
 import Loader from '../Loader'
+import { useGetLeaderBoardPos } from '../../hooks/useGetLeaderboardPos'
+import { useStoreState } from 'easy-peasy'
+import { useGetUserPoints } from '../../hooks/useGetUserPoints'
 const TurnaStats = () => {
   const { id } = useParams()
+  const { userdata } = useStoreState(state => state.user)
   const turnaName = useGetTurnaName(id)
   const participants = useGetParticipantsCount(id)
   const leaderboard = useGetLeaderBoard(id)
+  const pos = useGetLeaderBoardPos(id, userdata?.uniqueId)
+  const points = useGetUserPoints(id, userdata?.uniqueId)
   
-  // const MyModal = () => {
     let [isOpen, setIsOpen] = useState(false)
   
     function closeModal() {
@@ -101,7 +106,7 @@ const TurnaStats = () => {
                 <div className='space-y-2'>
                   <div className='flex'>
                     <div className='flex-1'>My points and position</div>
-                    <div>1st/34pts</div>
+                    <div>{pos+1}st/{points}pts</div>
                   </div>
                   <div className='flex'>
                     <div className='flex-1'>Participants</div>

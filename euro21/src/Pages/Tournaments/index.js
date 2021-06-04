@@ -22,7 +22,7 @@ const Tournament = () => {
   useEffect(() => {
     fetchTournaData();
   }, []);
-  console.log(tournaments)
+  
   return (
     <div className='grid gap-3 md:grid-cols-3'>
       {tournaments ? tournaments.map(({ uniqueId, data: { name, owenerId } }) => (

@@ -17,13 +17,12 @@ const NewGameDialog = () => {
     try {
       await http.get('/matches')
       const addNewGame = await http.post('/tournaments', {owenerId:userdata.uniqueId, name})
-      const addGameUsers = await http.post('/game-users', {
+      await http.post('/game-users', {
         userId: userdata.uniqueId,
         isOwner: true,
         gameId: addNewGame.data.uniqueId,
         points: 0
       })
-      console.log(addNewGame, addGameUsers)
     } catch (error) {
       console.log(error)
     }

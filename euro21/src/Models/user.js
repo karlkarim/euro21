@@ -33,7 +33,6 @@ export const user = {
     const { email, password, username } = payload
     try {
       const usernameExists = await http.get('/users', {params:{jsonata: `[$[data.username="${username}"]]`}})
-      console.log(usernameExists)
       if(usernameExists.data.length) {
         return action.setAuthError('Username already taken!')
       } else {
@@ -56,10 +55,8 @@ export const user = {
   }),
   userSignupWithInvite: thunk(async (action, payload) => {
     const { email, password, username, gameId } = payload
-    console.log(gameId)
     try {
       const usernameExists = await http.get('/users', {params:{jsonata: `[$[data.username="${username}"]]`}})
-      console.log(usernameExists)
       if(usernameExists.data.length) {
         return action.setAuthError('Username already taken!')
       } else {
@@ -78,7 +75,6 @@ export const user = {
           gameId,
           points: 0
         })
-        console.log('newGameUser', newGameUser.data);
         action.setUserData({username, email, avatar: null})
         action.setIsLoggedIn(true)
         }
