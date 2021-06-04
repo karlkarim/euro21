@@ -10,11 +10,13 @@ import { useStoreState } from 'easy-peasy';
 import { useHistory } from 'react-router-dom';
 import NewScore from './Components/Dialogs/AddScore/index';
 import Loader from './Components/Loader';
+import moment from 'moment';
 
 
 function App() {
   const { resumeLogin } = useStoreActions(action => action.user)
   const { isLoggedIn } = useStoreState(state => state.user)
+  
   useEffect(() => {
     resumeLogin()
   }, []);
