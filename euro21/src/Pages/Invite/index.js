@@ -73,6 +73,7 @@ const Invite = () => {
               id="password"
               name="password"
               value={password}
+              type='password'
               onChange={(e) => setPassword(e.target.value)}
               className="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none rounded-b-md focus:outline-none focus:ring-uefa-light focus:border-uefa-light focus:z-10 sm:text-sm"
               placeholder="Password"

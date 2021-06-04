@@ -95,7 +95,7 @@ const AuthForm = () => {
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
                             name="username"
-                            className="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                            className={`relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 ${authType === 'signup' ? 'rounded-t-md' : 'rounded-none'} appearance-none focus:outline-none focus:ring-uefa-light focus:border-uefa-light focus:z-10 sm:text-sm`}
                             placeholder="Username"
                           />
                         </div>
@@ -111,7 +111,7 @@ const AuthForm = () => {
                           name="email"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-                          className="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                          className={`relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 ${authType === 'login' ? 'rounded-t-md' : 'rounded-none'} appearance-none focus:outline-none focus:ring-uefa-light focus:border-uefa-light focus:z-10 sm:text-sm`}
                           placeholder="Email address"
                         />
                       </div>
@@ -122,9 +122,10 @@ const AuthForm = () => {
                         <input
                           id="password"
                           name="password"
+                          type='password'
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
-                          className="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                          className="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none rounded-b-md focus:outline-none focus:ring-uefa-light focus:border-uefa-light focus:z-10 sm:text-sm"
                           placeholder="Password"
                         />
                       </div>
@@ -134,11 +135,11 @@ const AuthForm = () => {
                       <button
                         disabled={isFormValid}
                         type="submit"
-                        className="relative flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md group hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        className="relative flex justify-center w-full px-4 py-2 text-sm font-medium text-white border border-transparent rounded-md bg-uefa-dark group hover:bg-uefa-light focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-uefa-light"
                       >
                         <span className="absolute inset-y-0 left-0 flex items-center pl-3">
                           <LockClosedIcon
-                            className="w-5 h-5 text-indigo-500 group-hover:text-indigo-400"
+                            className="w-5 h-5 text-uefa-light group-hover:text-uefa-dark "
                             aria-hidden="true"
                           />
                         </span>
@@ -150,7 +151,7 @@ const AuthForm = () => {
                         </div>
                         <div
                           onClick={() => toggleForm(authType === 'login' ? 'signup': 'login')}
-                          className='text-indigo-600 cursor-pointer hover:text-indigo-500'>
+                          className='cursor-pointer text-uefa-dark hover:text-uefa-light'>
                             {authType === 'login' ? 'Signup' : 'Login'}
                         </div>
                       </div>

@@ -6,10 +6,14 @@ import { useGetParticipantsCount } from '../../hooks/useGetParticipantsCount'
 import { useGetTurnaName } from '../../hooks/useGetTurnaName'
 import { useState, Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react'
+import { useGetLeaderBoard } from '../../hooks/useGetLeaderboard'
+import Leaderboard from './Leaderboard'
+import Loader from '../Loader'
 const TurnaStats = () => {
   const { id } = useParams()
   const turnaName = useGetTurnaName(id)
   const participants = useGetParticipantsCount(id)
+  const leaderboard = useGetLeaderBoard(id)
   
   // const MyModal = () => {
     let [isOpen, setIsOpen] = useState(false)
@@ -22,24 +26,10 @@ const TurnaStats = () => {
       setIsOpen(true)
     }
   
-  //   return (
-      
-  //   )
-  // }
   return ( 
 
     <div className="w-full">
 <>
-        {/* <div className="fixed inset-0 flex items-center justify-center">
-          <button
-            type="button"
-            onClick={openModal}
-            className="px-4 py-2 text-sm font-medium text-white bg-black rounded-md bg-opacity-20 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
-          >
-            Open dialog
-          </button>
-        </div> */}
-  
         <Transition appear show={isOpen} as={Fragment}>
           <Dialog
             as="div"
@@ -73,9 +63,11 @@ const TurnaStats = () => {
                     Leaderboard
                   </Dialog.Title>
                   <div className="mt-2">
-                    <p className="text-sm text-gray-500">
-                      users here with points
-                    </p>
+                    <div className="space-y-2 text-gray-800">
+                      {leaderboard ? leaderboard.map(({data:{userId, points}}) => (
+                        <Leaderboard name={userId} points={points}/>
+                      )): <Loader />}
+                    </div>
                   </div>
   
                   <div className="mt-4">
