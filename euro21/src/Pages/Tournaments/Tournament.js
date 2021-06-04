@@ -1,4 +1,4 @@
-import { useStoreActions, useStoreState } from "easy-peasy";
+import { useStoreState } from "easy-peasy";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import PredictionCard from "../../Components/Cards/PredictionCard";

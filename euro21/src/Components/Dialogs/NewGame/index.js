@@ -15,13 +15,13 @@ const NewGameDialog = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      const matches = await http.get('/matches')
-      const { uniqueId, data} = matches
-      const addNewGame = await http.post('/tournaments', {owenerId:userdata.uniqueId, name, matches: {uniqueId, data}})
+      await http.get('/matches')
+      const addNewGame = await http.post('/tournaments', {owenerId:userdata.uniqueId, name})
       const addGameUsers = await http.post('/game-users', {
         userId: userdata.uniqueId,
         isOwner: true,
-        gameId: addNewGame.data.uniqueId
+        gameId: addNewGame.data.uniqueId,
+        points: 0
       })
       console.log(addNewGame, addGameUsers)
     } catch (error) {
