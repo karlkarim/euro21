@@ -12,12 +12,16 @@ const Auth = () => {
   return (
     <div>
       {isLoggedIn ? (
-        <button onClick={()=> history.push('/app')}>Enter App</button>
+        <button onClick={()=> history.push('/app')} class="mt-6 font-bold py-2 px-4 rounded-full tracking-wide bg-gradient-to-b bg-uefa-light text-white outline-none focus:outline-none hover:shadow-lg">Enter App</button>
       ): (
-        <div>
-          <button key='ss' onClick={()=> handleAuth('login')}>Login</button>
-          <button key='aa' onClick={()=> handleAuth('signup')}>Signup</button>
-        </div>
+      <div class="flex space-x-4 my-4 text-sm">  
+        <button onClick={()=> handleAuth('signup')} class="bg-uefa-light text-white font-bold py-2 px-4 rounded-full">
+          Join the Game
+        </button>        
+        <button class="" onClick={()=> handleAuth('login')} >
+          or Login     
+        </button>                
+      </div>
       )}
     </div>
   );
