@@ -20,7 +20,7 @@ const TurnaStats = () => {
   const leaderboard = useGetLeaderBoard(id)
   const pos = useGetLeaderBoardPos(id, userdata?.uniqueId)
   const points = useGetUserPoints(id, userdata?.uniqueId)
-  
+  const avatar = userdata.data.avatar
     let [isOpen, setIsOpen] = useState(false)
   
     function closeModal() {
@@ -70,7 +70,7 @@ const TurnaStats = () => {
                   <div className="mt-2">
                     <div className="space-y-2 text-gray-800">
                       {leaderboard ? leaderboard.map(({data:{userId, points}}, i) => (
-                        <Leaderboard pos={i+1} name={userId} points={points}/>
+                        <Leaderboard pos={i+1} name={userId} points={points} avatar={userId}/>
                       )): <Loader />}
                     </div>
                   </div>
