@@ -20,18 +20,18 @@ const Tournament = () => {
     try {
       setToggling(true)
       const mathces = await http.get('/matches')
-      const pred = await http.get('/predictions',{ params: {jsonata:`[$[data.userId="${userdata.uniqueId}"]]`}})
+      const pred = await http.get('/predictions',{ params: {jsonata:`[$[data.userId="${userdata?.uniqueId}" and data.tournamentId="${id}"]]`}})
       pred.data.map(({data: { matchId }}) => (
         predictedIds.push(matchId)
       ))
-      
       if(pickType === 'needsPick') {
         const pickNeeded = mathces.data.filter(match => !predictedIds.includes( match.uniqueId ) )
         setMatches(pickNeeded)
+        console.log('predicredIds', predictedIds, pickNeeded);  
         setToggling(false)
       }
       if(pickType === 'picked') {
-        const pred = await http.get('/predictions',{ params: {jsonata:`[$[data.userId="${userdata.uniqueId}"]]`}})
+        const pred = await http.get('/predictions',{ params: {jsonata:`[$[data.userId="${userdata.uniqueId}" and data.tournamentId="${id}"]]`}})
         setMatches(pred.data)
         setToggling(false)
       }
