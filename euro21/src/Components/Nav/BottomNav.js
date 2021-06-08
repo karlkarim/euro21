@@ -1,4 +1,4 @@
-import { CogIcon, FireIcon, PlusCircleIcon } from "@heroicons/react/outline"
+import { CogIcon, FireIcon } from "@heroicons/react/outline"
 import { useStoreState } from "easy-peasy";
 import { useHistory } from 'react-router-dom';
 

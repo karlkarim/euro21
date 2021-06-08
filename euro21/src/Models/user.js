@@ -69,7 +69,7 @@ export const user = {
             createdAt: new Date()
           })
         const userId = addNewUser.data.uniqueId
-        const newGameUser = await http.post('/game-users', {
+        await http.post('/game-users', {
           userId,
           isOwner: false,
           gameId,
