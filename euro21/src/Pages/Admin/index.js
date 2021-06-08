@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-operators */
 import http from "../../http";
 import { useEffect, useState } from 'react';
 import moment from "moment";
@@ -127,22 +128,35 @@ const AdminPage = () => {
   function calc(merged, gameUsersId) {
     let total = 0
     merged.forEach(({real, predicted}, i) => {
-      const homeWin = real.data.homeScore > real.data.awayScore
-      const awayWin = real.data.awayScore > real.data.homeScore
+      if( real.data.homeScore === null || real.data.awayScore === null) {
+        return total += 0
+      }
+      const realHomeWin = real.data.homeScore > real.data.awayScore
+      const realAwayWin = real.data.awayScore > real.data.homeScore
+      const realTie = real.data.homeScore === real.data.awayScore
+      const predictedHomeWinWithOneSide = predicted.data.homeScore > predicted.data.awayScore && (real.data.homeScore === predicted.data.homeScore || real.data.awayScore === predicted.data.awayScore) 
+      const predictedAwayWinWithOneSide = predicted.data.homeScore < predicted.data.awayScore && (real.data.homeScore === predicted.data.homeScore || real.data.awayScore === predicted.data.awayScore) 
+      const userTie = predicted.data.homeScore === predicted.data.awayScore
+      const winnerWithOneScore = (realHomeWin && predictedHomeWinWithOneSide) ||  (realAwayWin && predictedAwayWinWithOneSide) // 4 points
+      const onlyWinner = ((realHomeWin && predicted.data.homeScore > predicted.data.awayScore) || (realAwayWin && predicted.data.awayScore > predicted.data.homeScore)) // 3 points
+      const incorrectTie = (realTie && userTie) // 3 pints
       if (real.data.homeScore === predicted.data.homeScore && real.data.awayScore === predicted.data.awayScore) {
-        
         total += 7
-      } else if (homeWin || awayWin) {
-        if(real.data.homeScore === predicted.data.homeScore || real.data.awayScore === predicted.data.awayScore) {
-          total += 4
-        } else {
-          total += 3
-        }
       } else {
-        if(real.data.homeScore === predicted.data.homeScore || real.data.awayScore === predicted.data.awayScore) {
-          total += 1
+        if(winnerWithOneScore) {
+          return total +=4
+        }
+        if(onlyWinner) {
+          return total += 3
+        }
+        if(incorrectTie) {
+          return total += 3
+        }
+        if((real.data.homeScore === predicted.data.homeScore) || (real.data.awayScore === predicted.data.awayScore)) {
+          return total += 1
         }
       }
+
     });
     http.put('/game-users', {points:total}, {params: {uniqueId: gameUsersId, strategy: 'merge'}})
     fetchGameUsers()
