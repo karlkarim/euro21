@@ -145,7 +145,7 @@ const AuthForm = () => {
                         </span>
                         Sign in
                       </button>
-                      <div className="flex justify-between my-4 text-sm">
+                      {/* <div className="flex justify-between my-4 text-sm">
                         <div className="">
                           {authType === 'login' ? 'Don\'t have an account?' : 'Already have an account?'}
                         </div>
@@ -154,7 +154,7 @@ const AuthForm = () => {
                           className='cursor-pointer text-uefa-dark hover:text-uefa-light'>
                             {authType === 'login' ? 'Signup' : 'Login'}
                         </div>
-                      </div>
+                      </div> */}
                     </div>
                   </form>
                 

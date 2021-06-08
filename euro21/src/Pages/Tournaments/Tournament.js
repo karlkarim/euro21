@@ -43,7 +43,7 @@ const Tournament = () => {
   useEffect(() => {
     fetchTournaData(matchToggle);
   }, [matchToggle, fetchGamesAgain]);
-  
+  console.log(matches)
   return (
     <div>
       <CopyToClipboard text={shareLink}

@@ -75,7 +75,7 @@ export const user = {
           gameId,
           points: 0
         })
-        action.setUserData({username, email, avatar: null})
+        action.setUserData({uniqueId: userId, data:{username, email, avatar: null}})
         action.setIsLoggedIn(true)
         }
       }

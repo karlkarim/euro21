@@ -11,7 +11,7 @@ const Tournament = () => {
   }
   const fetchTournaData = async () => {
     try {
-      const query = await http.get('/tournaments', {params: {jsonata: '[$[uniqueId="b568cd277f854d6da95cccaf8ff2711b"]]'}})
+      const query = await http.get('/tournaments')
         setTournaments(query.data);
       
     } catch (error) {

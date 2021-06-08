@@ -27,11 +27,16 @@ const Invite = () => {
     e.preventDefault()
     if(!formValid()) return
     userSignupWithInvite({email, password, username, gameId: id})
-      if(isLoggedIn) return history.push('/app')
+      return history.push('/app')
   }
   useEffect(() => {
     setIsFormValid(!formValid())
   },[username, email, password])
+  useEffect(() => {
+    if(isLoggedIn) {
+      history.push('/')
+    }
+  }, [isLoggedIn]);
   return ( 
     <div className='flex justify-center'>
       {turnaName ? (
