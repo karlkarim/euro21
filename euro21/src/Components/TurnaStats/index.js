@@ -18,10 +18,16 @@ const TurnaStats = () => {
   const turnaName = useGetTurnaName(id)
   const participants = useGetParticipantsCount(id)
   const leaderboard = useGetLeaderBoard(id)
-  const pos = useGetLeaderBoardPos(id, userdata?.uniqueId)
-  const points = useGetUserPoints(id, userdata?.uniqueId)
-    let [isOpen, setIsOpen] = useState(false)
   
+    let [isOpen, setIsOpen] = useState(false)
+
+    const PosAndPoints = ({id, userId}) => {
+      const pos = useGetLeaderBoardPos(id, userId)
+      const points = useGetUserPoints(id, userId)
+      return (
+        <div><span className='text-lg'>{pos+1}</span>. / {points}pts</div>
+      )
+    }
     function closeModal() {
       setIsOpen(false)
     }
@@ -105,7 +111,8 @@ const TurnaStats = () => {
                 <div className='space-y-2'>
                   <div className='flex'>
                     <div className='flex-1'>My points and position</div>
-                    <div>{pos+1}st/{points}pts</div>
+                    {/* <div><span className='text-lg'>{pos+1}</span>. with {points}pts</div> */}
+                    {userdata ? <PosAndPoints userId={userdata.uniqueId} id={id}/> : 'Loading'}
                   </div>
                   <div className='flex'>
                     <div className='flex-1'>Participants</div>

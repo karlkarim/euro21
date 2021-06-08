@@ -4,6 +4,7 @@ import moment from "moment";
 import { Transition } from '@headlessui/react';
 import { Dialog } from '@headlessui/react';
 import { Fragment } from 'react';
+import { useGetOwner } from '../../hooks/useGetOwner';
 
 const AdminPage = () => {
   const [matches, setMatches] = useState(null);
@@ -17,7 +18,9 @@ const AdminPage = () => {
   const [startingTime, setStartingTime] = useState('');
   const [stage, setStage] = useState('GroupStage');
   const [editing, setEditing] = useState(false);
-  let [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
+  const [gameUsers, setGameUsers] = useState(null);
+  
   
   function closeModal() {
     setIsOpen(false)
@@ -94,15 +97,80 @@ const AdminPage = () => {
       const query = await http.get('/matches')
       setMatches(query.data)
     } catch (error) {
-      
+      console.error(error)
     }
+  }
+  const fetchGameUsers = async () => {
+    try {
+      const get = await http.get('/game-users',{params: {jsonata: `[$[data.gameId="b568cd277f854d6da95cccaf8ff2711b"]]`}})
+      setGameUsers(get.data)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const calculate = async (userId, gameUsersId) => {
+    try {
+      const get = await http.get('/predictions',{params: {jsonata: `[$[data.tournamentId="b568cd277f854d6da95cccaf8ff2711b" and data.userId="${userId}"]]`}})
+      get.data.map((prediction) => {
+        const merged = get.data.map(userScore => ({
+          userId:prediction.data.userId,
+          predicted:{...userScore},
+          real:{...matches.find(matchScore => matchScore.uniqueId === userScore.data.matchId)}
+        }))
+        return calc(merged, gameUsersId)
+      })
+    } catch (error) {
+      console.error(error)
+    }
+  }
+  function calc(merged, gameUsersId) {
+    let total = 0
+    merged.forEach(({real, predicted}, i) => {
+      const homeWin = real.data.homeScore > real.data.awayScore
+      const awayWin = real.data.awayScore > real.data.homeScore
+      if (real.data.homeScore === predicted.data.homeScore && real.data.awayScore === predicted.data.awayScore) {
+        
+        total += 7
+      } else if (homeWin || awayWin) {
+        if(real.data.homeScore === predicted.data.homeScore || real.data.awayScore === predicted.data.awayScore) {
+          total += 4
+        } else {
+          total += 3
+        }
+      } else {
+        if(real.data.homeScore === predicted.data.homeScore || real.data.awayScore === predicted.data.awayScore) {
+          total += 1
+        }
+      }
+    });
+    http.put('/game-users', {points:total}, {params: {uniqueId: gameUsersId, strategy: 'merge'}})
+    fetchGameUsers()
+    fetchMatches()
+  }
+
+  const CalcUsers = ({uniqueId, points, userId}) => {
+    const username = useGetOwner(userId)
+    return (
+      <div className='flex items-center p-1 mx-2 mb-4 space-x-2 space-y-2 rounded-md shadow-md'>
+          <div key={uniqueId}>{points} {username}</div>
+          <button
+            className='p-1 text-sm text-white rounded-md bg-uefa-dark'
+            onClick={() => calculate(userId, uniqueId)}> calculate
+          </button>
+      </div>
+    )
   }
   useEffect(() => {
     fetchMatches()
+    fetchGameUsers()
   }, []);
   
   return ( 
     <div className='w-full'>
+      {gameUsers?.map(({uniqueId, data: {points, userId}}) => (
+        <CalcUsers key={uniqueId} uniqueId={uniqueId} points={points} userId={userId}/>
+      ))}
       <div>
         <button
           onClick={() => openModal('uniqueId', homeTeam, homeFlag, homeScore, awayTeam, awayFlag, awayScore, startingTime, false)}
