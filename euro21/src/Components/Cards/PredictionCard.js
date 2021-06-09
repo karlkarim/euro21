@@ -17,7 +17,7 @@ const PredictionCard = ({ method, homeTeam, awayTeam, homeScore, awayScore, home
     setScoreFormOpen(true)
   }
   return ( 
-    <div className='grid items-center grid-cols-3 p-4 bg-white border border-gray-100 rounded-md shadow-md select-none'>
+    <div className={`grid items-center grid-cols-3 p-4 border border-gray-100 rounded-md shadow-md select-none ${new Date(startingTime) >= Date.now() ? '' :'bg-gray-400 opacity-75'}`}>
         <div className='flex flex-col items-center'>
           <Flag className='inline object-cover w-10 h-10 mr-2 border border-gray-100 rounded-full shadow-md' code={homeFlag} fallback={ <span className='text-xs text-red-600'>noFlag</span> }/>
           <div className='text-center'>{homeTeam}</div>
