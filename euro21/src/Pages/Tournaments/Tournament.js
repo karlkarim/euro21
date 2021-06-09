@@ -14,18 +14,24 @@ const Tournament = () => {
   const { fetchGamesAgain } = useStoreState(state => state.ui)
   const [copied, setCopied] = useState(false);
   const { id } = useParams();
+  const currentDate = Date.now()
+  
+
   const shareLink = `http://localhost:3000/app/tournament/invite/${id}`
   const fetchTournaData = async (pickType) => {
     let predictedIds = [] 
     try {
       setToggling(true)
-      const mathces = await http.get('/matches')
+      const mathces = await http.get('/matches', {params: {jsonata: `[$[] ~> $filter(function($value){
+        $toMillis($value.data.startingTime)>${currentDate}
+    })]`}})
       const pred = await http.get('/predictions',{ params: {jsonata:`[$[data.userId="${userdata?.uniqueId}" and data.tournamentId="${id}"]]`}})
+      console.log('pred', pred);
       pred.data.map(({data: { matchId }}) => (
         predictedIds.push(matchId)
       ))
       if(pickType === 'needsPick') {
-        const pickNeeded = mathces.data.filter(match => !predictedIds.includes( match.uniqueId ) )
+        const pickNeeded = await mathces.data.filter(match => !predictedIds.includes( match.uniqueId ) )
         setMatches(pickNeeded)
         console.log('predicredIds', predictedIds, pickNeeded);  
         setToggling(false)
@@ -42,7 +48,7 @@ const Tournament = () => {
   };
   useEffect(() => {
     fetchTournaData(matchToggle);
-  }, [matchToggle, fetchGamesAgain]);
+  }, [matchToggle, fetchGamesAgain, userdata]);
   console.log(matches)
   return (
     <div>
@@ -62,7 +68,7 @@ const Tournament = () => {
           className={`hover:bg-uefa-light cursor-pointer text-gray-100 transition-all ease-in-out delay-75 border-b-2 border-white rounded-tr-md w-full p-1 text-center bg-uefa-dark ${matchToggle === 'picked' ? 'border-uefa-dark text-white bg-uefa-light text-lg': ''}`}>Predicted</div>
       </div>
       <div className='grid gap-4 md:grid-cols-3'>
-        {matches && !toggling ? matches.map(({uniqueId, data:{
+        {(matches && userdata) && !toggling ? matches.map(({uniqueId, data:{
           homeTeam,
           homeFlag,
           homeScore,

@@ -64,7 +64,7 @@ const Invite = () => {
               id="email-address"
               name="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value.toLocaleLowerCase())}
               className="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none focus:outline-none focus:ring-uefa-light focus:border-uefa-light focus:z-10 sm:text-sm"
               placeholder="Email address"
             />

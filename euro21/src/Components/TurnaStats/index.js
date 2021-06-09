@@ -83,7 +83,7 @@ const TurnaStats = () => {
                   <div className="mt-4">
                     <button
                       type="button"
-                      className="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-100 border border-transparent rounded-md bg-uefa-light hover:bg-uefa-dark focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                      className="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-100 border border-transparent rounded-md bg-gray-500uefa-dark focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
                       onClick={closeModal}
                     >
                       Close
@@ -96,15 +96,15 @@ const TurnaStats = () => {
         </Transition>
       </>
       <div className="w-full p-2 bg-white rounded-2xl">
-        <Disclosure>
+        <Disclosure defaultOpen={true}>
           {({ open }) => (
             <>
               <Disclosure.Button className="flex justify-between w-full px-4 py-2 text-sm font-medium text-white rounded-lg bg-uefa-dark hover:bg-uefa-light focus:outline-none focus-visible:ring focus-visible:ring-uefa-dark focus-visible:ring-opacity-75">
                 <div className='flex uppercase'><ChartBarIcon className='w-5 h-5'/>&nbsp;{turnaName}&nbsp;<span className='lowercase'>stats</span></div>
                 <ChevronUpIcon
                   className={`${
-                    open ? 'transform rotate-180' : ''
-                  } w-5 h-5 text-uefa-light`}
+                    open ? ' rotate-180' : ''
+                  } w-5 h-5 text-gray-100 transform ease-in-out `}
                 />
               </Disclosure.Button>
               <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm text-gray-500">
@@ -121,7 +121,7 @@ const TurnaStats = () => {
                 </div>
                 <button
                   onClick={openModal}
-                  className='w-full py-1.5 mt-6 text-white uppercase rounded-md bg-uefa-dark hover:bg-uefa-light border border-transparent focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-uefa-dark'>Leaderboard</button>
+                  className='w-full py-1.5 mt-6 text-white uppercase rounded-md bg-gray-700 hover:bg-gray-600 border border-transparent focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-gray-800'>Leaderboard</button>
               </Disclosure.Panel>
             </>
           )}

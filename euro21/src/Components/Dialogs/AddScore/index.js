@@ -7,7 +7,7 @@ import http from "../../../http";
 const NewScore = () => {
   const { initialNewScoreData, fetchGamesAgain, newScoreFormOpen } = useStoreState(state => state.ui)
   const { setScoreFormOpen, setFetchNewGamesAgain } = useStoreActions((action) => action.ui)
-  const { homeTeam, awayTeam, homeScore, awayScore } = initialNewScoreData
+  const { homeTeam, awayTeam, homeScore, awayScore, startingTime } = initialNewScoreData
   const [teamSeleceted, setTeamSeleceted] = useState(homeTeam);
   
   const handleClose = async () => {
@@ -21,7 +21,7 @@ const NewScore = () => {
         }
       }
       if(initialNewScoreData.method === 'edit') {
-        const editPrediction = await http.put('/predictions', { homeScore, awayScore },
+        const editPrediction = await http.put('/predictions', { homeScore, awayScore, startingTime },
         { params: { strategy: "merge", uniqueId: initialNewScoreData.uniqueId } })
         if(editPrediction.status === 201){
           setFetchNewGamesAgain(!fetchGamesAgain)
