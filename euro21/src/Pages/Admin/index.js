@@ -125,7 +125,7 @@ const AdminPage = () => {
       console.error(error)
     }
   }
-  function calc(merged, gameUsersId) {
+  async function calc(merged, gameUsersId) {
     let total = 0
     merged.forEach(({real, predicted}, i) => {
       if( real.data.homeScore === null || real.data.awayScore === null) {
@@ -158,7 +158,7 @@ const AdminPage = () => {
       }
 
     });
-    http.put('/game-users', {points:total}, {params: {uniqueId: gameUsersId, strategy: 'merge'}})
+    await http.put('/game-users', {points:total}, {params: {uniqueId: gameUsersId, strategy: 'merge'}})
     fetchGameUsers()
     fetchMatches()
   }

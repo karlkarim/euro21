@@ -83,7 +83,7 @@ const TurnaStats = () => {
                   <div className="mt-4">
                     <button
                       type="button"
-                      className="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-100 border border-transparent rounded-md bg-gray-500uefa-dark focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                      className="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-100 border border-transparent rounded-md bg-uefa-dark focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-uefa-dark"
                       onClick={closeModal}
                     >
                       Close

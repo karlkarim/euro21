@@ -6,6 +6,7 @@ import Loader from "../../Components/Loader";
 import TurnaStats from "../../Components/TurnaStats";
 import http from "../../http";
 import {CopyToClipboard} from 'react-copy-to-clipboard';
+import OtherPredictions from '../../Components/Cards/OtherPredictions';
 const Tournament = () => {
   const [matches, setMatches] = useState(null);
   const [matchToggle, setMatchToggle] = useState('needsPick');
@@ -17,7 +18,7 @@ const Tournament = () => {
   const currentDate = Date.now()
   
 
-  const shareLink = `http://localhost:3000/app/tournament/invite/${id}`
+  const shareLink = `https://euro21-7ec8d.web.app/app/tournament/invite/${id}`
   const fetchTournaData = async (pickType) => {
     let predictedIds = [] 
     try {
@@ -49,15 +50,16 @@ const Tournament = () => {
   useEffect(() => {
     fetchTournaData(matchToggle);
   }, [matchToggle, fetchGamesAgain, userdata]);
-  console.log(matches)
+  
   return (
     <div>
-      <CopyToClipboard text={shareLink}
+      {userdata?.data.username === 'Kelgu' && <CopyToClipboard text={shareLink}
           onCopy={() => setCopied(true)}>
           <button className='text-sm text-uefa-light bg-gray-100 rounded-md px-1 py-0.5'>{copied ? 'Link copied!': 'Copy link to invite others'}</button>
-        </CopyToClipboard>
+        </CopyToClipboard>}
         
       <TurnaStats />
+      <OtherPredictions />
       <div className='flex justify-around mb-2'>
         
         <div
@@ -75,11 +77,13 @@ const Tournament = () => {
           awayTeam,
           awayFlag,
           awayScore,
+          matchId,
           startingTime}}) => (
           <PredictionCard
           method={matchToggle === 'needsPick' ? 'new' : 'edit'}
           key={uniqueId}
           matchId={uniqueId}
+          predictionId={matchId}
           tournamentId={id}
           homeTeam={homeTeam}
           homeFlag={homeFlag}

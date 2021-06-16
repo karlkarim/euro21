@@ -8,6 +8,8 @@ export const ui =  {
   initialNewScoreData: {},
   newGameFormOpen: false,
   fetchGamesAgain: false,
+  otherPredictionsOpen: false,
+  otherPredictions: null,
   setAuthForm: action((state, newState) => {
     state.authFormOpen = newState[0]
     state.authType = newState[1]
@@ -32,5 +34,11 @@ export const ui =  {
   }),
   setFetchNewGamesAgain: action((state, newState) => {
     state.fetchGamesAgain = newState
+  }),
+  setOtherPredictions: action((state, newState) => {
+    state.otherPredictions = newState
+  }),
+  setOtherPredictionsOpen: action((state, newState) => {
+    state.otherPredictionsOpen = newState
   })
 }
